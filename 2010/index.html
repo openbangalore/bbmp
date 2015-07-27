@@ -1,0 +1,87 @@
+
+<html>
+<!-----------------------------------------------------------------------
+Coded by Thejesh GN http://thejeshgn.com 
+Data Analysis and Support
+Uthara
+Vandana
+Anamika
+Asim
+Sasank
+GIS Interns at ij. 
+------------------------------------------------------------------------->
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<META NAME='DESCRIPTION' CONTENT='BBMP election results for 2010 with analysis'>
+	<META NAME='KEYWORDS' CONTENT='bbmp, elections, vote4bbmp, 2011'>
+	<title>BBMP Election Results for 2010</title>
+	<link rel="stylesheet" type="text/css" href="../datatable/media/css/jquery.dataTables.min.css">
+	<script src="../datatable/media/js/jquery.js" ></script>
+	<script src="../datatable/media/js/jquery.dataTables.min.js" ></script>
+	<script>
+		$(document).ready(function() {
+		$('#results_table').dataTable( {
+				"ajax": "results.js",
+				"columns": [
+					{ "data": "Ward_No" },
+					{ "data": "Ward_Name" },
+					{ "data": "Reservation" },
+					{ "data": "Woman" },
+					{ "data": "Winning_Candidate_Name" },
+					{ "data": "Gender" },
+					{ "data": "Winning_Party" },
+					{ "data": "Voters" },
+					{ "data": "Votes_casted" },
+					{ "data": "Voter_turnout_calc" },
+					{ "data": "Winning_Votes" }
+				]
+			} );
+		} );
+
+	</script>
+</head>
+<body>
+<table id="results_table" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+				<tr>
+				<th colspan="5">Ward Details</th>
+				<th colspan="4">Winner</th>
+				<th colspan="2">Turnout</th>
+				</tr>
+				<tr>
+                <th>Ward No</th>
+                <th>Ward</th>
+                <th>Reservation</th>
+                <th>Woman</th>
+				<th>Voters</th>
+
+				
+                <th>Winning Candidate</th>
+				<th>Gender</th>
+				<th>Winning Party</th>
+				<th>Winning Votes</th>
+				
+				<th>Voters Casted </th>
+				<th>Turnout</th>
+				</tr>
+            </tr>
+        </thead>
+ 
+        <tfoot>
+            <tr>
+                <th>Ward No</th>
+                <th>Ward</th>
+                <th>Reservation</th>
+                <th>Woman</th>
+                <th>Winning Candidate</th>
+				<th>Gender</th>
+				<th>Winning Party</th>
+				<th>Voters</th>
+				<th>Voters Casted </th>
+				<th>Turnout</th>
+				<th>Winning Votes</th>
+            </tr>
+        </tfoot>
+    </table>
+</body>
