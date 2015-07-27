@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html>
 <!-----------------------------------------------------------------------
 Coded by Thejesh GN http://thejeshgn.com 
@@ -11,28 +11,38 @@ Sasank
 GIS Interns at ij. 
 ------------------------------------------------------------------------->
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<META NAME='DESCRIPTION' CONTENT='BBMP election results for 2010 with analysis'>
 	<META NAME='KEYWORDS' CONTENT='bbmp, elections, vote4bbmp, 2011'>
 	<title>BBMP Election Results for 2010</title>
-	<link rel="stylesheet" type="text/css" href="../datatable/media/css/jquery.dataTables.min.css">
-	<script src="../datatable/media/js/jquery.js" ></script>
-	<script src="../datatable/media/js/jquery.dataTables.min.js" ></script>
+	
+	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
+	
+	<script src="//code.jquery.com/jquery-1.11.1.min.js" ></script>
+	<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js" ></script>
+	<script src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js" ></script>
+	<style>
+		body { font-size: 140%;  }
+	</style>
 	<script>
 		$(document).ready(function() {
 		$('#results_table').dataTable( {
 				"ajax": "results.js",
+				 "pageLength": 10,
 				"columns": [
 					{ "data": "Ward_No" },
 					{ "data": "Ward_Name" },
 					{ "data": "Reservation" },
 					{ "data": "Woman" },
-					{ "data": "Winning_Candidate_Name" },
-					{ "data": "Gender" },
-					{ "data": "Winning_Party" },
 					{ "data": "Voters" },
 					{ "data": "Votes_casted" },
 					{ "data": "Voter_turnout_calc" },
+					
+					{ "data": "Winning_Candidate_Name" },
+					{ "data": "Gender" },
+					{ "data": "Winning_Party" },
 					{ "data": "Winning_Votes" }
 				]
 			} );
@@ -41,47 +51,53 @@ GIS Interns at ij.
 	</script>
 </head>
 <body>
-<table id="results_table" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
+<div class="container">
+<div class="table-responsive">
+	<table id="results_table" class="display table table-striped table-bordered table-condensed"  cellspacing="0">
+			<thead>
 				<tr>
-				<th colspan="5">Ward Details</th>
-				<th colspan="4">Winner</th>
-				<th colspan="2">Turnout</th>
-				</tr>
-				<tr>
-                <th>Ward No</th>
-                <th>Ward</th>
-                <th>Reservation</th>
-                <th>Woman</th>
-				<th>Voters</th>
+					<tr>
+						<th colspan="4">Ward Details</th>
+						<th colspan="3">Turnout</th>
+						<th colspan="4">Winner</th>
+					</tr>
+					<tr>
+						<th>Ward No</th>
+						<th>Ward</th>
+						<th>Reservation</th>
+						<th>Woman</th>
 
-				
-                <th>Winning Candidate</th>
-				<th>Gender</th>
-				<th>Winning Party</th>
-				<th>Winning Votes</th>
-				
-				<th>Voters Casted </th>
-				<th>Turnout</th>
+						<th>Voters</th>					
+						<th>Voters Casted </th>
+						<th>Turnout</th>
+
+						<th>Winning Candidate</th>
+						<th>Gender</th>
+						<th>Winning Party</th>
+						<th>Winning Votes</th>
+					</tr>
 				</tr>
-            </tr>
-        </thead>
- 
-        <tfoot>
-            <tr>
-                <th>Ward No</th>
-                <th>Ward</th>
-                <th>Reservation</th>
-                <th>Woman</th>
-                <th>Winning Candidate</th>
-				<th>Gender</th>
-				<th>Winning Party</th>
-				<th>Voters</th>
-				<th>Voters Casted </th>
-				<th>Turnout</th>
-				<th>Winning Votes</th>
-            </tr>
-        </tfoot>
-    </table>
+			</thead>
+	 
+			<tfoot>
+				<tr>
+					<th>Ward No</th>
+					<th>Ward</th>
+					<th>Reservation</th>
+					<th>Woman</th>
+
+					<th>Voters</th>
+					<th>Voters Casted </th>
+					<th>Turnout</th>
+					
+					<th>Winning Candidate</th>
+					<th>Gender</th>
+					<th>Winning Party</th>
+					<th>Winning Votes</th>
+				</tr>
+			</tfoot>
+		</table>
+	</div> <!-- table responsive -->
+	</div> <!-- container -->
 </body>
+</html>
