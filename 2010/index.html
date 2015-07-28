@@ -44,7 +44,48 @@ GIS Interns at ij.
 					{ "data": "Gender" },
 					{ "data": "Winning_Party" },
 					{ "data": "Winning_Votes" }
-				]
+				],
+/*				"fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+								
+								switch(aData["Winning_Party"]){
+									case 'BJP':
+										$(nRow).css('background-color', '#ff9999')
+										break;
+									case 'INC':
+										$(nRow).css('background-color', '#72c398')
+										break;
+									case 'JD(S)':
+										$(nRow).css('background-color', '#afd9ee')
+										break;
+									default:
+										$(nRow).css('background-color', '#f7ecb5')
+								}
+				}
+*/				
+				"columnDefs": [ {
+				"targets": 9,
+				"data": "Winning_Party",
+				"render": function ( data, type, full, meta ) {
+								switch(data){									
+									case 'BJP':
+										return "<img src='BJP.png' height='20px'/> "+data;
+									case 'INC':
+										return "<img src='INC.png' height='20px'/> "+data; 
+									case 'JD(S)':
+										return "<img src='JDS.png' height='20px'/> "+data;
+									default:
+										return "<img src='Others.png' height='20px'/> "+data;										
+								}								
+				}
+			  } ]			
+				
+				
+				
+				
+				
+				
+				
+				
 			} );
 		} );
 
