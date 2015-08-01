@@ -10,6 +10,7 @@ Asim
 Sasank
 GIS Interns at ij. 
 ------------------------------------------------------------------------->
+
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
@@ -17,19 +18,65 @@ GIS Interns at ij.
 	<META NAME='KEYWORDS' CONTENT='bbmp, elections, vote4bbmp, 2011'>
 	<title>BBMP Election Results for 2010</title>
 	
+
+	
 	<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css">
 	
 	<script src="//code.jquery.com/jquery-1.11.1.min.js" ></script>
 	<script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js" ></script>
 	<script src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js" ></script>
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+	<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+	
+	<script type="text/javascript" src="./wards.js"></script>
 	<style>
 		body { font-size: 140%;  }
+		#map { height: 500px; }
 	</style>
 	<script>
+		var map;
+		my_wards = ward_b["features"];
+		
 		$(document).ready(function() {
+		map = L.map('map').setView([12.976549,77.594397], 11);
+
+		
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		
+		function style(feature) {
+			return {
+				weight: 2,
+				opacity: 0.7,
+				color: '#800026',
+				dashArray: '1',
+				fillOpacity: 0.1,
+				//fillColor: getColor(feature.properties.WARD_NO)
+				fillColor:'#FFEDA0'
+			};
+		}
+		
+		function onEachFeature(feature, layer) {
+			layer.on({
+				//mouseover: highlightFeature,
+				//mouseout: resetHighlight,
+				//click: zoomToFeature
+			});
+		}
+		
+		geojson = L.geoJson(ward_b, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
+		
+		
 		$('#results_table').dataTable( {
-				"ajax": "results.js",
+				"ajax": "./results.js",
+				 "dom": 'C<"clear">lfrtip',
 				 "pageLength": 10,
 				"columns": [
 					{ "data": "Ward_No" },
@@ -86,13 +133,24 @@ GIS Interns at ij.
 				
 				
 				
+			} );//datatable
+			
+			
+			$('#results_table').on( 'search.dt', function () {
+
 			} );
+			
 		} );
 
+		
+		
+		
 	</script>
 </head>
 <body>
 <div class="container">
+<div id="map"></div>
+
 <div class="table-responsive">
 	<table id="results_table" class="display table table-striped table-bordered table-condensed"  cellspacing="0">
 			<thead>
