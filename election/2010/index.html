@@ -34,6 +34,32 @@ GIS Interns at ij.
 	<style>
 		body { font-size: 140%;  }
 		#map { height: 450px; }
+				.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+			width:250px;
+		}
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
 	</style>
 	<script>
 		var map;
@@ -49,6 +75,16 @@ GIS Interns at ij.
 		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
+		var legend = L.control({position: 'bottomright'});
+
+		legend.onAdd = function (map) {
+			var div = L.DomUtil.create('div', 'info legend');
+			div.innerHTML = '<h3>Choropleth</h3> <input type="radio" name="choropleth" value="party" checked onclick="updateMap();"> Party <input type="radio" name="choropleth" value="gender" onclick="updateMap();"> Gender';
+			return div;
+		};
+
+		legend.addTo(map);
+		
 		
 //		function style(feature) {
 //			return {
@@ -174,20 +210,33 @@ GIS Interns at ij.
 	
 		
 		function getStyleForWard(feature){
-			
+			var selectedVal = "party";
+			var selected = $("input[type='radio'][name='choropleth']:checked");
+			if (selected.length > 0) {
+				selectedVal = selected.val();
+			}
+
 			var map_ward_no = feature.properties.WARD_NO;
 			var dt = $('#results_table').DataTable().$('tr', {"filter":"applied"});
 			for(j=0; j<dt.length; j++){
 				var ward = dt[j].cells[0].innerText;
-				if(map_ward_no == ward || map_ward_no == "0"+ward || map_ward_no == "00"+ward){
-					var party = dt[j].cells[9].innerText;
-					console.log(party);
-					switch (party) {
-						case ' BJP': return {color: "#000000", 	fillColor: "#ff0000" ,weight: 1, opacity: 0.7, fillOpacity: 0.5};
-						case ' INC':   return {color: "#000000" , fillColor: "#0000ff" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
-						case ' JDS':   return {color: "#000000" , fillColor: "#00ff00" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
-						case ' Independant':   return {color: "#000000" , fillColor: "#ffff00" ,weight: 1, opacity: 0.7, fillOpacity: 0.5};
-						default: return {color: "#000000" , fillColor: "#ffff00" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
+				if(map_ward_no == ward || map_ward_no == "0"+ward || map_ward_no == "00"+ward){														
+					if(selectedVal == "party"){
+						var party = dt[j].cells[9].innerText;
+						switch (party) {
+							case ' BJP': return {color: "#000000", 	fillColor: "#ff0000" ,weight: 1, opacity: 0.7, fillOpacity: 0.5};
+							case ' INC':   return {color: "#000000" , fillColor: "#0000ff" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
+							case ' JDS':   return {color: "#000000" , fillColor: "#00ff00" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
+							case ' Independant':   return {color: "#000000" , fillColor: "#ffff00" ,weight: 1, opacity: 0.7, fillOpacity: 0.5};
+							default: return {color: "#000000" , fillColor: "#ffff00" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
+						}
+					}else if(selectedVal == "gender"){
+						var gender = dt[j].cells[8].innerText;
+						switch(gender){
+							case 'M': return {color: "#000000", 	fillColor: "#9999ff" ,weight: 1, opacity: 0.7, fillOpacity: 0.5};
+							case 'F':   return {color: "#000000" , fillColor: "#FF69B4" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
+							default: return {color: "#000000" , fillColor: "#ffff00" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};					
+						}
 					}
 				}
 			}
@@ -196,7 +245,7 @@ GIS Interns at ij.
 		
 		
 		function updateMap(){
-			console.log("inside");
+			//console.log("inside");
 //			var my_coloring_by = "party";
 //			for(i=0; i <my_wards.length; i++){
 //				var dt = $('#results_table').DataTable().$('tr', {"filter":"applied"});
