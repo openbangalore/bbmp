@@ -50,25 +50,25 @@ GIS Interns at ij.
 		}).addTo(map);
 
 		
-		function style(feature) {
-			return {
-				weight: 2,
-				opacity: 0.7,
-				color: '#800026',
-				dashArray: '1',
-				fillOpacity: 0.1,
-				//fillColor: getColor(feature.properties.WARD_NO)
-				fillColor:'#FFEDA0'
-			};
-		}
+//		function style(feature) {
+//			return {
+//				weight: 2,
+//				opacity: 0.7,
+//				color: '#800026',
+//				dashArray: '1',
+//				fillOpacity: 0.1,
+//				//fillColor: getColor(feature.properties.WARD_NO)
+//				fillColor:'#FFEDA0'
+//			};
+//		}
 		
-		function onEachFeature(feature, layer) {
-			layer.on({
-				//mouseover: highlightFeature,
-				//mouseout: resetHighlight,
-				//click: zoomToFeature
-			});
-		}
+//		function onEachFeature(feature, layer) {
+//			layer.on({
+//				//mouseover: highlightFeature,
+//				//mouseout: resetHighlight,
+//				//click: zoomToFeature
+//			});
+//		}
 		
 
 		
@@ -144,11 +144,11 @@ GIS Interns at ij.
 			} );//datatable
 			
 			
-//			$('#results_table').on( 'search.dt', function () {
-//				
-//				//console.log(dt.length);
-//				updateMap();
-//			} );
+			$('#results_table').on( 'search.dt', function () {
+				
+				//console.log(dt.length);
+				updateMap();
+			} );
 			
 		} );
 		
@@ -174,28 +174,33 @@ GIS Interns at ij.
 	
 		
 		function getStyleForWard(feature){
+			
 			var map_ward_no = feature.properties.WARD_NO;
 			var dt = $('#results_table').DataTable().$('tr', {"filter":"applied"});
 			for(j=0; j<dt.length; j++){
 				var ward = dt[j].cells[0].innerText;
-				if(map_ward_no == ward){
+				if(map_ward_no == ward || map_ward_no == "0"+ward || map_ward_no == "00"+ward){
 					var party = dt[j].cells[9].innerText;
 					console.log(party);
 					switch (party) {
-						case ' BJP': return {color: "#ff0000"};
-						case ' INC':   return {color: "#0000ff"};
+						case ' BJP': return {color: "#000000", 	fillColor: "#ff0000" ,weight: 1, opacity: 0.7, fillOpacity: 0.5};
+						case ' INC':   return {color: "#000000" , fillColor: "#0000ff" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
+						case ' JDS':   return {color: "#000000" , fillColor: "#00ff00" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
+						case ' Independant':   return {color: "#000000" , fillColor: "#ffff00" ,weight: 1, opacity: 0.7, fillOpacity: 0.5};
+						default: return {color: "#000000" , fillColor: "#ffff00" ,	weight: 1, opacity: 0.7, fillOpacity: 0.5};
 					}
 				}
 			}
+			return {color: "#000000" , fillColor: "#ffffff" ,	weight: 1, opacity: 0.7};
 		}
 		
 		
 		function updateMap(){
-//			console.log("inside");
+			console.log("inside");
 //			var my_coloring_by = "party";
 //			for(i=0; i <my_wards.length; i++){
 //				var dt = $('#results_table').DataTable().$('tr', {"filter":"applied"});
-//				console.log(my_wards[i][j]["properties"]["WARD_NO"]);
+//				//console.log(my_wards[i][j]["properties"]["WARD_NO"]);
 //				for(j=0; j<dt.length; j++){
 //					if(my_wards[i]["properties"]["WARD_NO"] == dt[j][0]){
 //						console.log(my_wards[i][j]["properties"]["WARD_NO"]);
@@ -211,7 +216,7 @@ GIS Interns at ij.
 			}
 			ward_layer = L.geoJson(ward_b, {
 			style: function(feature) {
-					console.log(feature.properties.WARD_NO);
+					//console.log(feature.properties.WARD_NO);
 					return getStyleForWard(feature);
 				}
 			}).addTo(map);
