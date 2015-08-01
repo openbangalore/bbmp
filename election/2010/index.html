@@ -33,11 +33,13 @@ GIS Interns at ij.
 	<script type="text/javascript" src="./wards.js"></script>
 	<style>
 		body { font-size: 140%;  }
-		#map { height: 500px; }
+		#map { height: 450px; }
 	</style>
 	<script>
 		var map;
+		var ward_layer;
 		my_wards = ward_b["features"];
+		
 		
 		$(document).ready(function() {
 		map = L.map('map').setView([12.976549,77.594397], 11);
@@ -68,16 +70,22 @@ GIS Interns at ij.
 			});
 		}
 		
-		geojson = L.geoJson(ward_b, {
-			style: style,
-			onEachFeature: onEachFeature
-		}).addTo(map);
+
 		
 		
-		$('#results_table').dataTable( {
+		var results_table = $('#results_table').dataTable( {
 				"ajax": "./results.js",
-				 "dom": 'C<"clear">lfrtip',
-				 "pageLength": 10,
+				"dom": 'C<"clear">lfrtip',
+				"pageLength": 10,
+				"initComplete": function(settings, json) {
+					$('#results_table input').unbind();
+					$('#results_table input').bind('keyup', function(e) {
+						if(e.keyCode == 13) {
+							results_table.search( this.value ).draw();
+						}
+					}); 
+				},
+				
 				"columns": [
 					{ "data": "Ward_No" },
 					{ "data": "Ward_Name" },
@@ -136,12 +144,78 @@ GIS Interns at ij.
 			} );//datatable
 			
 			
-			$('#results_table').on( 'search.dt', function () {
-
-			} );
+//			$('#results_table').on( 'search.dt', function () {
+//				
+//				//console.log(dt.length);
+//				updateMap();
+//			} );
 			
 		} );
+		
+		
 
+
+	//prevents form submissions if press ENTER in textbox	
+//	$(window).keydown(function (event) {
+//        if (event.keyCode == 13) {
+//            event.preventDefault();
+//            return false;
+//        }
+//    });
+//		
+//	var searchbox = $('#results_table_filter search');
+//    searchbox.unbind();
+//    searchbox.bind('keyup', function (e) {
+//        if (e.keyCode == 13) {
+//            results_table.search(this.value).draw();
+//        }
+//    });	
+	
+	
+		
+		function getStyleForWard(feature){
+			var map_ward_no = feature.properties.WARD_NO;
+			var dt = $('#results_table').DataTable().$('tr', {"filter":"applied"});
+			for(j=0; j<dt.length; j++){
+				var ward = dt[j].cells[0].innerText;
+				if(map_ward_no == ward){
+					var party = dt[j].cells[9].innerText;
+					console.log(party);
+					switch (party) {
+						case ' BJP': return {color: "#ff0000"};
+						case ' INC':   return {color: "#0000ff"};
+					}
+				}
+			}
+		}
+		
+		
+		function updateMap(){
+//			console.log("inside");
+//			var my_coloring_by = "party";
+//			for(i=0; i <my_wards.length; i++){
+//				var dt = $('#results_table').DataTable().$('tr', {"filter":"applied"});
+//				console.log(my_wards[i][j]["properties"]["WARD_NO"]);
+//				for(j=0; j<dt.length; j++){
+//					if(my_wards[i]["properties"]["WARD_NO"] == dt[j][0]){
+//						console.log(my_wards[i][j]["properties"]["WARD_NO"]);
+//						console.log(dt[j][0]);
+//					}
+//					//console.log(my_wards[i][j]["properties"]["WARD_NO"])
+//					
+//					
+//				}
+//			}
+			if(ward_layer){
+				map.removeLayer(ward_layer);
+			}
+			ward_layer = L.geoJson(ward_b, {
+			style: function(feature) {
+					console.log(feature.properties.WARD_NO);
+					return getStyleForWard(feature);
+				}
+			}).addTo(map);
+		}
 		
 		
 		
